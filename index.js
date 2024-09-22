@@ -5,7 +5,6 @@ const { Client, Events, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
-
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -23,6 +22,10 @@ for (const folder of commandFolders) {
 		}
 	}
 }
+
+client.once(Events.ClientReady, readyClient => {
+	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+  });
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
@@ -47,9 +50,6 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.config = require("./config.json");
-client.once(Events.ClientReady, readyClient => {
-	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-  });
 
   // Log in to Discord with your client's token
   client.login(client.config.token);
