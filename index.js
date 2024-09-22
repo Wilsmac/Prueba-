@@ -1,16 +1,16 @@
-const { Client, Partials } = require("discord.js");
+const { Client, Events, GatewayIntentBits } = require('discord.js');
 
-const { User, Message, GuildMember, ThreadMember } = Partials;
 
-const client = new Client({
-  intents: [],
-  partials: [User, Message, GuildMember, ThreadMember]
-});
+// Create a new client instance
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 
 client.config = require("./config.json");
+client.once(Events.ClientReady, readyClient => {
+	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+  });
 
-client.on("ready", () => { 
-  console.log("el bot se inicio correctamente");
-});
- 
-client.login(client.config.token);
+  // Log in to Discord with your client's token
+  client.login(client.config.token);
+
+
